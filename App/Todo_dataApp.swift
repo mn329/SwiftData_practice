@@ -6,13 +6,14 @@
     //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Todo_dataApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TodoView()
         }
-        .modelContainer(for: TodoItem.self)
+        .modelContainer(AppContainer.shared)
     }
 }
