@@ -11,65 +11,48 @@ import SwiftUI
 struct AddTodoButton: View {
   let action: () -> Void
   var body: some View {
-    Button(action: action) { Image(systemName: "plus") }.buttonStyle(.borderedProminent)
+    Button(action: action) {
+      Image(systemName: "plus")
+    }
+    .buttonStyle(.glass)
+    .tint(Color.blue.opacity(0.7))
   }
 }
 
+// 状態と全体 UI を持つ親 View
 struct TodoView: View {
-  // 💡 2. SwiftDataのデータベースを操作するための環境変数
-  @Environment(\.modelContext) private var modelContext
-  // 💡 3. SwiftDataのデータベースからデータを取得するためのクエリ
-  @Query(sort: \TodoItem.createdAt, order: .forward) private var todos: [TodoItem]
   @State private var isAddSheetPresented = false
+  @State private var showCompleted = true
 
   var body: some View {
     NavigationStack {
-      Group {
-        if todos.isEmpty {
-          ContentUnavailableView(
-            "タスクがありません",
-            systemImage: "checklist",
-            description: Text("右下の+から追加できます")
-          )
-        } else {
-          List {
-            ForEach(todos) { todo in
-              HStack {
-                Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                  .foregroundStyle(todo.isCompleted ? .green : .gray)
-                  .onTapGesture {
-                    todo.isCompleted.toggle()
-                  }
-                VStack(alignment: .leading) {
-                  Text(todo.title)
-                    .strikethrough(todo.isCompleted)
-                    .foregroundStyle(todo.isCompleted ? .gray : .primary)
-                  Text(
-                    todo.createdAt.formatted(
-                      .dateTime.year().month().day().locale(Locale(identifier: "ja_JP"))
-                    )
-                  )
-                  .font(.caption)
-                  .foregroundStyle(.secondary)
-                }
-              }
-            }
-            .onDelete { indexSet in
-              for index in indexSet {
-                modelContext.delete(todos[index])
-              }
-            }
-          }
-        }
+      VStack(spacing: 0) {
+        Toggle("完了済みタスクを表示", isOn: $showCompleted)
+          .padding()
+
+        FilteredTodoListView(showCompleted: showCompleted)
+          .id(showCompleted)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.systemBackground))
+      .background(
+        LinearGradient(
+          colors: [
+            Color.blue.opacity(0.20),
+            Color.purple.opacity(0.14),
+            Color(.systemBackground),
+          ],
+          startPoint: .topLeading,
+          endPoint: .bottomTrailing
+        )
+      )
       .navigationTitle("Todo")
       .navigationBarTitleDisplayMode(.inline)
       .overlay(alignment: .bottomTrailing) {
         AddTodoButton {
           isAddSheetPresented = true
-        }.padding(.trailing, 20).padding(.bottom, 20)
+        }
+        .padding(.trailing, 20)
+        .padding(.bottom, 20)
       }
       .sheet(isPresented: $isAddSheetPresented) {
         TodoAddTaskSheetView()
