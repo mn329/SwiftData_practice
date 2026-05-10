@@ -4,7 +4,7 @@ SwiftUI と SwiftData を使ったシンプルな Todo アプリの学習用プ�
 
 ## できること
 
-- Todo の一覧表示（作成日時の古い順）
+- Todo の一覧表示（`createdAt` が新しい順）
 - 右下の **+** からシートを開き、タイトルを入力して追加
 - タップで完了／未完了の切り替え
 - スワイプで削除
@@ -29,6 +29,9 @@ SwiftUI と SwiftData を使ったシンプルな Todo アプリの学習用プ�
 | `Core/Data/AppContainer.swift` | `ModelContainer` の共有設定（スキーマ・永続化） |
 | `Features/Todo/Models/TodoItem.swift` | `@Model` のデータモデル |
 | `Features/Todo/Views/TodoListView.swift` | 一覧・追加シート・操作 UI（`TodoView` など） |
+| `Features/Todo/Views/FilteredTodoListView.swift` | フィルタ付き一覧（`NavigationLink` で詳細へ） |
+| `Features/Todo/Views/TodoDetailView.swift` | タスク名の編集（`@Bindable`） |
+| `Features/Todo/Views/TodoAddTaskSheetView.swift` | 追加シート |
 
 ## アーキテクチャのメモ
 
@@ -41,7 +44,3 @@ SwiftUI と SwiftData を使ったシンプルな Todo アプリの学習用プ�
 特に指定がない限り、リポジトリ管理者の方針に従います。
 
 ---
-
-## 追記メモ
-
-- ビルド成果物 `DerivedData/` はリポジトリに含めないことを推奨します（`.gitignore` で除外すると安全です）。
