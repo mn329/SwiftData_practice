@@ -12,6 +12,7 @@
 		679EEC832FA3ADC500C3CD41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 679EEC7F2FA3ADC500C3CD41 /* Assets.xcassets */; };
 		679EEC892FA3AEA500C3CD41 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679EEC862FA3AEA500C3CD41 /* TodoListView.swift */; };
 		679EEC8B2FA3AF5900C3CD41 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679EEC8A2FA3AF5300C3CD41 /* TodoItem.swift */; };
+		679EEC8E2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679EEC8D2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		679EEC802FA3ADC500C3CD41 /* Todo_dataApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo_dataApp.swift; sourceTree = "<group>"; };
 		679EEC862FA3AEA500C3CD41 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
 		679EEC8A2FA3AF5300C3CD41 /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		679EEC8D2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoAddTaskSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 		679EEC872FA3AEA500C3CD41 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				679EEC8D2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift */,
 				679EEC862FA3AEA500C3CD41 /* TodoListView.swift */,
 			);
 			path = Views;
@@ -224,6 +227,7 @@
 			files = (
 				676526D32FA3B700006C4913 /* AppContainer.swift in Sources */,
 				679EEC892FA3AEA500C3CD41 /* TodoListView.swift in Sources */,
+				679EEC8E2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift in Sources */,
 				679EEC8B2FA3AF5900C3CD41 /* TodoItem.swift in Sources */,
 				679EEC822FA3ADC500C3CD41 /* Todo_dataApp.swift in Sources */,
 			);

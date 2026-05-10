@@ -21,7 +21,6 @@ struct TodoView: View {
   // 💡 3. SwiftDataのデータベースからデータを取得するためのクエリ
   @Query(sort: \TodoItem.createdAt, order: .forward) private var todos: [TodoItem]
   @State private var isAddSheetPresented = false
-  @State private var draftTaskTitle = ""
 
   var body: some View {
     NavigationStack {
@@ -72,27 +71,9 @@ struct TodoView: View {
           isAddSheetPresented = true
         }.padding(.trailing, 20).padding(.bottom, 20)
       }
-      // 入力画面をモーダル表示(onDismiss: 閉じた時の処理)
-      .sheet(
-        isPresented: $isAddSheetPresented,
-        onDismiss: {
-          draftTaskTitle = ""
-        }
-      ) {
-        VStack(alignment: .leading, spacing: 12) {
-          TextField("タスクを入力", text: $draftTaskTitle)
-            .textFieldStyle(.roundedBorder)
-          Text("入力中: \(draftTaskTitle)")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-          Button("閉じる", role: .cancel) {
-            draftTaskTitle = ""
-            isAddSheetPresented = false
-          }
-        }
-        .padding()
+      .sheet(isPresented: $isAddSheetPresented) {
+        TodoAddTaskSheetView()
       }
-
     }
   }
 }
