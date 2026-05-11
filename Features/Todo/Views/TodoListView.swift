@@ -23,6 +23,7 @@ struct AddTodoButton: View {
 struct TodoView: View {
   @State private var isAddSheetPresented = false
   @State private var showCompleted = true
+  @State private var searchText = ""
 
   var body: some View {
     NavigationStack {
@@ -30,8 +31,8 @@ struct TodoView: View {
         Toggle("完了済みタスクを表示", isOn: $showCompleted)
           .padding()
 
-        FilteredTodoListView(showCompleted: showCompleted)
-          .id(showCompleted)
+        FilteredTodoListView(showCompleted: showCompleted, searchText: searchText)
+          .id("\(showCompleted)_\(searchText)")
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(
@@ -46,6 +47,7 @@ struct TodoView: View {
         )
       )
       .navigationTitle("Todo")
+      .searchable(text: $searchText, prompt: "タスクを検索")
       .navigationBarTitleDisplayMode(.inline)
       .overlay(alignment: .bottomTrailing) {
         AddTodoButton {

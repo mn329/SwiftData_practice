@@ -12,11 +12,13 @@ struct FilteredTodoListView: View {
 
   @Query private var todos: [TodoItem]
 
-  init(showCompleted: Bool) {
+  init(showCompleted: Bool, searchText: String) {
     let includeCompleted = showCompleted
+    let searchQuery = searchText
     _todos = Query(
       filter: #Predicate<TodoItem> { todo in
-        includeCompleted || todo.isCompleted == false
+        (includeCompleted || todo.isCompleted == false)
+          && (searchQuery.isEmpty || todo.title.localizedStandardContains(searchQuery))
       },
       sort: \TodoItem.createdAt,
       order: .reverse
@@ -36,7 +38,9 @@ struct FilteredTodoListView: View {
           ForEach(todos) { todo in
             HStack(alignment: .center, spacing: 12) {
               Button {
-                todo.isCompleted.toggle()
+                withAnimation(.snappy) {
+                  todo.isCompleted.toggle()
+                }
               } label: {
                 Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
                   .font(.title3)
