@@ -18,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		670FEA892FB07A2D0001DC47 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
 		676526D22FA3B51E006C4913 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
 		679EEC682FA3A9E300C3CD41 /* Todo_data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todo_data.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		679EEC7F2FA3ADC500C3CD41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -143,7 +142,6 @@
 		679EEC872FA3AEA500C3CD41 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				670FEA892FB07A2D0001DC47 /* Untitled.swift */,
 				679EEC972FA3E40000C3CD41 /* FilteredTodoListView.swift */,
 				679EEC8D2FA3C10000C3CD41 /* TodoAddTaskSheetView.swift */,
 				679EECA02FA3E80000C3CD41 /* TodoDetailView.swift */,
