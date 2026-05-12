@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode — ユーザー固有・生成物
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+DerivedData/
+build/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager（ルートに SPM を置く場合）
+.build/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/xcshareddata/
+
+# CocoaPods / Carthage（使う場合）
+Pods/
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# その他
+*.orig
+*.log
