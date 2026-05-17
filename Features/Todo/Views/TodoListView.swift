@@ -1,8 +1,6 @@
 //
-//  ContentView.swift
+//  TodoListView.swift
 //  Todo_data
-//
-//  Created by 石田湊 on 2026/05/01.
 //
 
 import SwiftData
@@ -19,20 +17,24 @@ struct AddTodoButton: View {
   }
 }
 
-// 状態と全体 UI を持つ親 View
 struct TodoView: View {
-  @State private var isAddSheetPresented = false
-  @State private var showCompleted = true
-  @State private var searchText = ""
+  @Environment(\.modelContext) private var modelContext
+  @State private var viewModel = TodoListViewModel()
+  @State private var filteredListViewModel: FilteredTodoListViewModel?
 
   var body: some View {
     NavigationStack {
       VStack(spacing: 0) {
-        Toggle("完了済みタスクを表示", isOn: $showCompleted)
+        Toggle("完了済みタスクを表示", isOn: $viewModel.showCompleted)
           .padding()
 
-        FilteredTodoListView(showCompleted: showCompleted, searchText: searchText)
-          .id("\(showCompleted)_\(searchText)")
+        if let filteredListViewModel {
+          FilteredTodoListView(
+            filter: viewModel.filter,
+            viewModel: filteredListViewModel
+          )
+          .id(viewModel.listIdentity)
+        }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(
@@ -47,17 +49,28 @@ struct TodoView: View {
         )
       )
       .navigationTitle("Todo")
-      .searchable(text: $searchText, prompt: "タスクを検索")
+      .searchable(text: $viewModel.searchText, prompt: "タスクを検索")
       .navigationBarTitleDisplayMode(.inline)
       .overlay(alignment: .bottomTrailing) {
         AddTodoButton {
-          isAddSheetPresented = true
+          viewModel.presentAddSheet()
         }
         .padding(.trailing, 20)
         .padding(.bottom, 20)
       }
-      .sheet(isPresented: $isAddSheetPresented) {
-        TodoAddTaskSheetView()
+      .sheet(isPresented: $viewModel.isAddSheetPresented) {
+        TodoAddTaskSheetView(
+          viewModel: TodoAddTaskSheetViewModel(
+            repository: TodoRepository(modelContext: modelContext)
+          )
+        )
+      }
+      .onAppear {
+        if filteredListViewModel == nil {
+          filteredListViewModel = FilteredTodoListViewModel(
+            repository: TodoRepository(modelContext: modelContext)
+          )
+        }
       }
     }
   }

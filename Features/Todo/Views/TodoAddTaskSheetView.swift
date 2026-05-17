@@ -3,25 +3,21 @@
 //  Todo_data
 //
 
-import SwiftData
 import SwiftUI
 
-/// タスク追加用シート（入力欄・ツールバー・保存処理をまとめる）
 struct TodoAddTaskSheetView: View {
-  @State private var draftTaskTitle = ""
-  // 閉じるボタンを押した時に空にする
+  @Bindable var viewModel: TodoAddTaskSheetViewModel
   @Environment(\.dismiss) private var dismiss
-  @Environment(\.modelContext) private var modelContext
 
   var body: some View {
     NavigationStack {
       VStack {
         Spacer()
         VStack(alignment: .center, spacing: 12) {
-          TextField("タスクを入力", text: $draftTaskTitle)
+          TextField("タスクを入力", text: $viewModel.draftTaskTitle)
             .textFieldStyle(.roundedBorder)
             .multilineTextAlignment(.center)
-          Text("入力中: \(draftTaskTitle)")
+          Text("入力中: \(viewModel.inputPreview)")
             .font(.caption)
             .foregroundStyle(.secondary)
             .multilineTextAlignment(.center)
@@ -36,25 +32,17 @@ struct TodoAddTaskSheetView: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button("戻る", role: .cancel) {
-            draftTaskTitle = ""
+            viewModel.resetDraft()
             dismiss()
           }
         }
         ToolbarItem(placement: .confirmationAction) {
           Button("追加") {
-            // 空白をtrimしてから追加
-            let trimmedTitle =
-              draftTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedTitle.isEmpty else {
-              return
+            if viewModel.submit() {
+              dismiss()
             }
-            modelContext.insert(TodoItem(title: trimmedTitle))
-            draftTaskTitle = ""
-            dismiss()
           }
-          .disabled(
-            draftTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-          )
+          .disabled(!viewModel.canSubmit)
         }
       }
     }

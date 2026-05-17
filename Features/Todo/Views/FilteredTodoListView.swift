@@ -6,15 +6,17 @@
 import SwiftData
 import SwiftUI
 
-/// クエリ結果に応じた Todo 一覧（完了表示のオン／オフでフィルタ）
 struct FilteredTodoListView: View {
   @Environment(\.modelContext) private var modelContext
 
+  let viewModel: FilteredTodoListViewModel
+
   @Query private var todos: [TodoItem]
 
-  init(showCompleted: Bool, searchText: String) {
-    let includeCompleted = showCompleted
-    let searchQuery = searchText
+  init(filter: TodoListFilter, viewModel: FilteredTodoListViewModel) {
+    self.viewModel = viewModel
+    let includeCompleted = filter.showCompleted
+    let searchQuery = filter.searchText
     _todos = Query(
       filter: #Predicate<TodoItem> { todo in
         (includeCompleted || todo.isCompleted == false)
@@ -29,9 +31,9 @@ struct FilteredTodoListView: View {
     Group {
       if todos.isEmpty {
         ContentUnavailableView(
-          "タスクがありません",
-          systemImage: "checklist",
-          description: Text("右下の+から追加できます")
+          viewModel.emptyStateTitle,
+          systemImage: viewModel.emptyStateSystemImage,
+          description: Text(viewModel.emptyStateDescription)
         )
       } else {
         List {
@@ -39,10 +41,10 @@ struct FilteredTodoListView: View {
             HStack(alignment: .center, spacing: 12) {
               Button {
                 withAnimation(.snappy) {
-                  todo.isCompleted.toggle()
+                  viewModel.toggleCompletion(for: todo)
                 }
               } label: {
-                Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
+                Image(systemName: viewModel.completionIconName(for: todo))
                   .font(.title3)
                   .foregroundStyle(todo.isCompleted ? .green : .gray)
                   .frame(width: 28, height: 28)
@@ -51,28 +53,29 @@ struct FilteredTodoListView: View {
               .buttonStyle(.plain)
 
               NavigationLink {
-                TodoDetailView(todo: todo)
+                TodoDetailView(
+                  viewModel: TodoDetailViewModel(
+                    todo: todo,
+                    repository: TodoRepository(modelContext: modelContext)
+                  )
+                )
               } label: {
                 VStack(alignment: .leading, spacing: 4) {
                   Text(todo.title)
-                    .strikethrough(todo.isCompleted)
-                    .foregroundStyle(todo.isCompleted ? .gray : .primary)
-                  Text(
-                    todo.createdAt.formatted(
-                      .dateTime.year().month().day().locale(Locale(identifier: "ja_JP"))
+                    .strikethrough(viewModel.isStrikethrough(for: todo))
+                    .foregroundStyle(
+                      viewModel.titleForegroundIsSecondary(for: todo) ? .gray : .primary
                     )
-                  )
-                  .font(.caption)
-                  .foregroundStyle(.secondary)
+                  Text(todo.createdAtFormatted)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
               }
             }
           }
           .onDelete { indexSet in
-            for index in indexSet {
-              modelContext.delete(todos[index])
-            }
+            viewModel.delete(at: indexSet, from: todos)
           }
         }
         .scrollContentBackground(.hidden)
