@@ -28,7 +28,7 @@ SwiftUI と SwiftData を使ったシンプルな Todo アプリの学習用プ�
 | `App/Todo_dataApp.swift` | エントリ。`TodoView` を表示し `modelContainer` を注入 |
 | `Core/Data/AppContainer.swift` | `ModelContainer` の共有設定（スキーマ・永続化） |
 | `Features/Todo/Models/TodoItem.swift` | `@Model` のデータモデル |
-| `Features/Todo/Models/TodoItem+Formatting.swift` | 表示用フォーマット（作成日時など） |
+| `Features/Todo/Models/Formatting.swift` | `TodoItem` の表示用フォーマット（作成日時など） |
 | `Features/Todo/Services/TodoRepository.swift` | SwiftData への読み書き（データアクセス層） |
 | `Features/Todo/ViewModels/*.swift` | 画面の状態・操作ロジック（MVVM の VM） |
 | `Features/Todo/Views/TodoListView.swift` | 一覧画面の UI（`TodoView`） |
